@@ -1,0 +1,36 @@
+{
+  "name": "irail-departures",
+  "version": "0.0.0",
+  "description": "a board which shows departures supported by irail data",
+  "main": "component.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "irail",
+    "departures"
+  ],
+  "authors": [
+    "Jeroen Bastijns"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "iron-ajax": "polymerelements/iron-ajax#^1.0.9",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.0.5",
+    "iron-icons": "PolymerElements/iron-icons#~1.0.4",
+    "lodash": "~3.10.1",
+    "paper-header-panel": "PolymerElements/paper-header-panel#~1.0.5",
+    "paper-item": "PolymerElements/paper-item#~1.0.7",
+    "paper-listbox": "polymerelements/paper-listbox#~1.0.0",
+    "paper-spinner": "PolymerElements/paper-spinner#~1.0.4",
+    "paper-toolbar": "PolymerElements/paper-toolbar#~1.0.4",
+    "polymer": "Polymer/polymer#^1.2.0"
+  }
+}

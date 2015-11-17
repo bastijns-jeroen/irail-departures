@@ -1,0 +1,21 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<dom-module id="irail-minutes">
+
+    <template>
+        <span>[[ minutes ]] min</span>
+    </template>
+
+    <script>
+        Polymer({
+            is: "irail-minutes",
+            properties: {
+                seconds: String
+            },
+            ready: function() {
+                this.minutes = parseInt(this.seconds)/60;
+            }
+        });
+    </script>
+
+</dom-module>

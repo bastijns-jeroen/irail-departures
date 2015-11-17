@@ -1,0 +1,116 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="/bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="/bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="/bower_components/paper-spinner/paper-spinner.html">
+
+<link rel="import" href="bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+<script src="bower_components/lodash/lodash.min.js"></script>
+
+
+<link rel="import" href="./irail-time.html">
+<link rel="import" href="./irail-minutes.html">
+
+<dom-module id="irail-departures">
+
+    <template>
+        <style>
+            paper-header-panel {
+                height: 600px;
+            }
+        </style>
+        <style is="custom-style">
+          .paper-font-headline {
+            @apply(--paper-font-headline);
+          }
+
+          .paper-font-title {
+            @apply(--paper-font-title);
+          }
+
+          .item, .disabled-item {
+            position: relative;
+            padding: 8px;
+            border: 1px solid;
+            border-color: var(--divider-color);
+            border-top: 0;
+          }
+        </style>
+
+        <iron-ajax auto id="ajaxElement" url="http://api.irail.be/connections/"
+            params="[[ searchParams ]]"
+            handle-as="json"
+            loading="{{ loading }}"
+            on-response="handleResponse">
+        </iron-ajax>
+
+        <template is="dom-if" if="{{ loading }}">
+            <div class="horizontal layout center-center">
+                <paper-spinner active></paper-spinner>
+            </div>
+        </template>
+
+        <template is="dom-if" if="{{ !loading }}">
+            <div class="vertical layout">
+                <paper-header-panel class="flex">
+                    <paper-toolbar>
+                        <div class="paper-font-headline">Departures from [[ departure ]] to [[ arrival ]]</div>
+                    </paper-toolbar>
+                    <div>
+                        <paper-listbox class="flex">
+                            <template is="dom-repeat" items="[[data.connection]]">
+                                <div>
+                                    <paper-item class="item">
+                                        <paper-item-body two-line>
+                                            <div class="paper-font-headline">
+                                                <iron-icon icon="icons:schedule"></iron-icon><irail-time time="[[item.departure.time]]"></irail-time>
+                                                <iron-icon icon="icons:arrow-forward"></iron-icon><span>[[item.departure.direction.name]]</span>
+                                                (<irail-minutes seconds="[[ item.duration ]]"></irail-minutes>)
+                                            </div>
+                                            <div class="paper-font-title">
+                                                <iron-icon icon="icons:alarm-add"></iron-icon><irail-minutes seconds="[[ item.departure.delay ]]"></irail-minutes>
+                                            </div>
+                                        </paper-item-body>
+                                    </paper-item>
+                                </div>
+                            </template>
+                        </paper-listbox>
+                    </div>
+                </paper-header-panel>
+            </div>
+        </template>
+    </template>
+
+    <script>
+        Polymer({
+            is: "irail-departures",
+            properties: {
+                from: String,
+                to: String,
+                searchParams: {
+                    type: String,
+                    computed: 'getSearchParams(from, to)'
+                }
+            },
+            getSearchParams: function(from, to) {
+                return {
+                    "from": from,
+                    "to": to,
+                    "timeSel": "depart",
+                    "format": "json"
+                }
+            },
+            handleResponse: function(event, ajax) {
+                this.data = ajax.response;
+                this.departure = this.data.connection[0].departure.station;
+                this.arrival = this.data.connection[0].arrival.station;
+            }
+        });
+    </script>
+
+</dom-module>

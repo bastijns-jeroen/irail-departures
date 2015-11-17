@@ -1,0 +1,26 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<dom-module id="irail-time">
+
+    <template>
+        <span>[[ formattedTime ]]</span>
+    </template>
+
+    <script>
+        Polymer({
+            is: "irail-time",
+            properties: {
+                time: String
+            },
+            ready: function() {
+                var date = new Date(parseInt(this.time)*1000);
+                this.formattedTime = padWithLeadingZero(date.getHours()) + ':' + padWithLeadingZero(date.getMinutes());
+            }
+        });
+
+        function padWithLeadingZero(toPad) {
+            return _.padLeft(toPad,2,'0');
+        }
+    </script>
+
+</dom-module>
